@@ -11,8 +11,10 @@ function Chat() {
   const [user] = useAuthState(auth);
   const [value, setValue] = useState("");
   const [messages, loading] = useCollectionData(
-    firestore.collection("message").orderBy("createdAt")
+    firestore.collection("message").orderBy("createdAt") || []
   );
+
+  console.log("Message: ", messages);
 
   const sendMessage = async () => {
     firestore.collection("message").add({
@@ -44,7 +46,7 @@ function Chat() {
             background: " linear-gradient(45deg,#e1442e,#39249a",
           }}
         >
-          {messages.map((message) => (
+          {(messages || []).map((message) => (
             <div
               style={{
                 margin: 10,
